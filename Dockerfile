@@ -1,5 +1,7 @@
 FROM centos:6
-
+RUN rm -f /etc/yum.repos.d/*
+ADD CentOS6-Base-163.repo /etc/yum.repos.d/
+RUN echo 'exclude = *.i?86' >> /etc/yum.conf
 RUN echo 'exclude = *.i?86' >> /etc/yum.conf
 RUN echo /usr/local/lib > /etc/ld.so.conf.d/local.conf && echo /usr/local/lib64 >> /etc/ld.so.conf.d/local.conf
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig
