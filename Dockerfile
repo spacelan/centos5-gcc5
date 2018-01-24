@@ -1,10 +1,9 @@
-FROM centos:5
-RUN rm -f /etc/yum.repos.d/*
-ADD CentOS-Vault.repo /etc/yum.repos.d/
+FROM centos:6
+
 RUN echo 'exclude = *.i?86' >> /etc/yum.conf
 RUN echo /usr/local/lib > /etc/ld.so.conf.d/local.conf && echo /usr/local/lib64 >> /etc/ld.so.conf.d/local.conf
 ENV PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig
-ARG NUM_CPU=24
+ARG NUM_CPU=4
 RUN yum install -y curl bzip2 gcc-c++ make m4 file pkgconfig perl expat-devel zlib-devel gettext \
     which openssh-clients rsync bzip2-devel readline-devel mesa-libGLU-devel \
     && yum clean all && rm -rf /usr/share/locale
@@ -45,7 +44,7 @@ RUN curl http://ftp.gnu.org/gnu/mpc/mpc-1.0.3.tar.gz | tar xz \
     && make -j $NUM_CPU install && /root/clean
 
 # gcc
-RUN curl http://fr.mirror.babylon.network/gcc/releases/gcc-5.4.0/gcc-5.4.0.tar.bz2 | tar xj \
+RUN curl http://mirrors.ustc.edu.cn/gnu/gcc/gcc-5.4.0/gcc-5.4.0.tar.bz2 | tar xj \
     && mkdir build && cd build \
     && ../gcc-5.4.0/configure --enable-languages=c,c++,fortran --disable-multilib \
     && make -j $NUM_CPU && make install \
